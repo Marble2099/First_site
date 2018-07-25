@@ -6,16 +6,56 @@
     <title>First Site</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script src="express.js"></script>
-    <link rel="stylesheet" href="Main.css">
+    <script src="server.js"></script>
+    
 </head>
 <body>
     <header>
         <div class="nav">
-            <a href="Main.html"> Main</a>
-            <a href="About.html">About</a>
-            <a href="Form.html">Form</a>
+            <a href="/"> Main</a>
+            <a href="About">About</a>
+            <a href="Form">Form</a>
         </div>
-    </header>            
+    </header>  
+    <table class="table table-condensed table-striped table-bordered">
+        <td><tr><th>Имя</th><th>Фамилия</th><th></th></tr></td>
+        <tbody>
+        </tbody>
+    </table>
+   <script>
+   
+    function GetUsers() {
+        $.ajax({
+            url: "/api/users",
+            type: "GET",
+            contentType: "application/json",
+            success: function (users) {
+                var rows = "";
+                $.each(users, function (index, user) {
+                    // добавляем полученные элементы в таблицу
+                    rows += row(user);
+                })
+                $("table tbody").append(rows);
+             }
+        });
+    }   
+    // создание строки для таблицы
+    var row = function (user) {
+        return "<tr data-rowid='" + user._id + "'><td>" + user._id + "</td>" +
+               "<td>" + user.name + "</td> <td>" + user.fam + "</td></tr>";
+    }
+    // отправка формы
+    $("form").submit(function (e) {
+        e.preventDefault();
+        var name = this.elements["name"].value;
+        var fam = this.elements["fam"].value;
+        if (id == 0)
+            CreateUser(name, fam);
+        else
+            EditUser(name, fam);
+    });
+    // загрузка пользователей
+    GetUsers();
+</script>       
 </body>
 </html>>
